@@ -9,12 +9,13 @@ import SwiftUI
 
 @main
 struct LoanTrackerApp: App {
+    
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            LoansView()
+                .environment(\.managedObjectContext, persistenceController.viewContext)
         }
     }
 }
