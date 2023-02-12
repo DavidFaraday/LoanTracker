@@ -18,21 +18,21 @@ struct LoanCellView: View {
             VStack(alignment: .leading, spacing: 5) {
                 
                 Text(name)
-                    .font(.title2)
+                    .font(.headline)
                     .fontWeight(.semibold)
                 
-                Text(amount.toCurrency)
-                    .font(.title2)
+                Text(amount, format: .currency(code: "EUR"))
+                    .font(.subheadline)
                     .fontWeight(.light)
             }
             
             Spacer()
             
-            Text(date.longDate)
-                .font(.subheadline)
+            Text(date.formatted(date: .abbreviated, time: .omitted))
+                .font(.caption)
                 .foregroundColor(.secondary)
 
-        }            
+        }
     }
 }
 

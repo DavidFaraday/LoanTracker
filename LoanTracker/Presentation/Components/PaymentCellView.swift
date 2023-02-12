@@ -14,11 +14,11 @@ struct PaymentCellView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text(amount.toCurrency)
-                .font(.title2)
+            Text(amount, format: .currency(code: "EUR"))
+                .font(.headline)
                 .fontWeight(.semibold)
             
-            Text(date.longDate)
+            Text(date.formatted(date: .abbreviated, time: .omitted))
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }

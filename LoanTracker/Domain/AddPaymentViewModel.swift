@@ -11,48 +11,49 @@ final class AddPaymentViewModel: ObservableObject {
     
     @Published var amount = ""
     @Published var date = Date()
-    @Published var payment: Payment?
+    
+    private var payment: Payment?
+    private var loan: Loan?
 
-    var loanId: String
-
-    init(paymentToEdit payment: Payment?, loanId: String) {
+    func setLoanObject(loan: Loan) {
+        self.loan = loan
+    }
+    
+    func setPayment(payment: Payment?) {
         self.payment = payment
-        self.loanId = loanId
     }
     
     func savePayment() {
-        if payment != nil {
-            updatePayment()
-        } else {
-            createNewPayment()
-        }
+        payment != nil ? updatePayment() : createNewPayment()
     }
     
-    func createNewPayment() {
+    private func createNewPayment() {
         let newPayment = Payment(context: PersistenceController.shared.viewContext)
         newPayment.id = UUID().uuidString
         newPayment.amount = Double(amount) ?? 0.0
         newPayment.date = date
-        newPayment.loanId = loanId
+        newPayment.loan = loan
         
         PersistenceController.shared.save()
     }
     
-    func updatePayment() {
-        payment!.amount = Double(amount) ?? 0.0
-        payment!.date = date
+    private func updatePayment() {
+        guard let payment = payment else { return }
+        
+        payment.amount = Double(amount) ?? 0.0
+        payment.date = date
         
         PersistenceController.shared.save()
     }
     
     func setupEditView() {
-        if payment != nil {
-            amount = "\(payment!.amount)"
-            date = payment!.date ?? Date()
-        }
+        guard let payment = payment else { return }
+
+        amount = "\(payment.amount)"
+        date = payment.date ?? Date()
     }
     
     func isValidForm() -> Bool {
-        return amount.isEmpty
+        amount.isEmpty
     }
 }

@@ -42,16 +42,16 @@ struct PersistenceController {
     }
 
     
-    func fetchPayments(for loanId: String) -> [Payment] {
-        
-        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
-        request.predicate = NSPredicate(format: "loanId == %@", loanId)
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Payment.date, ascending: true)]
-
-        do {
-           return try viewContext.fetch(request)
-       } catch {
-           return []
-       }
-    }
+//    func fetchPayments(for loanId: String) -> [Payment] {
+//
+//        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
+//        request.predicate = NSPredicate(format: "loanId == %@", loanId)
+//        request.sortDescriptors = [NSSortDescriptor(keyPath: \Payment.date, ascending: true)]
+//
+//        do {
+//           return try viewContext.fetch(request)
+//       } catch {
+//           return []
+//       }
+//    }
 }
