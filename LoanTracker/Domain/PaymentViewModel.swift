@@ -91,16 +91,12 @@ final class PaymentViewModel: ObservableObject {
     func separateByYear() {
         allPaymentObjects = []
 
-        let dict = Dictionary(grouping: allPayments, by: { $0.date?.intOfYear })
+        let dict = Dictionary(grouping: allPayments, by: { $0.wrappedDate.intOfYear })
 
         for (key, value) in dict {
             guard let key = key else { return }
             
-            var total = 0.0
-
-            for payment in value {
-                total += payment.amount
-            }
+            let total = value.reduce(0) { $0 + $1.amount }
 
             allPaymentObjects.append(PaymentObject(sectionName: "\(key)", sectionObjects: value.reversed(), sectionTotal: total))
         }
