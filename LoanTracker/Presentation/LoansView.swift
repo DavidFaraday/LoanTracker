@@ -61,6 +61,8 @@ struct LoansView: View {
                     PaymentView(loan: loan)
                 case .addPayment(let loan, let payment):
                     AddPaymentView(loan: loan, payment: payment)
+                case .newView:
+                    Text("nothing")
                 }
             }
         }

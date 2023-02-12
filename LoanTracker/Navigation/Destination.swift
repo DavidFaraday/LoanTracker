@@ -10,4 +10,5 @@ import Foundation
 enum Destination: Hashable {
     case payment(Loan)
     case addPayment(Loan, Payment? = nil)
+    case newView
 }
