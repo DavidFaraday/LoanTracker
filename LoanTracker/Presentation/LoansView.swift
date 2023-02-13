@@ -13,6 +13,7 @@ struct LoansView: View {
     @Environment(\.managedObjectContext) var viewContext
 
     @State private var isAddLoanShowing = false
+    @State private var selectedLoan: Loan?
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Loan.startDate, ascending: true)],
@@ -40,13 +41,26 @@ struct LoansView: View {
                     NavigationLink(value: Destination.payment(loan)) {
                         LoanCellView(name: loan.name ?? "",
                                      amount: loan.totalAmount,
-                                     date: loan.dueDate ?? Date()
-                        )
+                                     date: loan.wrappedDueDate)
+                        .swipeActions(allowsFullSwipe: false) {
+                            Button {
+                                selectedLoan = loan
+                            } label: {
+                                Label("Edit", systemImage: "pencil")
+                            }
+                            .tint(.indigo)
+
+                            Button(role: .destructive) {
+                                deleteLoan(loan: loan)
+                            } label: {
+                                Label("Delete", systemImage: "trash.fill")
+                            }
+                        }
                     }
                 }
-                .onDelete(perform: deleteItems)
             }
             .navigationTitle("All Loans")
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     addButton()
@@ -54,6 +68,9 @@ struct LoansView: View {
             }
             .sheet(isPresented: $isAddLoanShowing) {
                 AddLoanView(viewModel: AddLoanViewModel())
+            }
+            .sheet(item: $selectedLoan) { loan in
+                AddLoanView(viewModel: AddLoanViewModel(loanToEdit: loan))
             }
             .navigationDestination(for: Destination.self) { destination in
                 switch destination {
@@ -66,9 +83,9 @@ struct LoansView: View {
         }
     }
     
-    func deleteItems(offsets: IndexSet) {
+    func deleteLoan(loan: Loan) {
         withAnimation {
-            offsets.map { loans[$0] }.forEach(viewContext.delete)
+            viewContext.delete(loan)
             PersistenceController.shared.save()
         }
     }

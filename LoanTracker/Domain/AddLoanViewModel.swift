@@ -14,12 +14,12 @@ final class AddLoanViewModel: ObservableObject {
     @Published var startDate = Date()
     @Published var dueDate = Date()
     
-    @Published var loanToEdit: Loan?
+    private var loanToEdit: Loan?
 
     init(loanToEdit: Loan? = nil) {
         self.loanToEdit = loanToEdit
     }
-    
+        
     func saveLoan() {
         loanToEdit != nil ? updateLoan() : createNewLoan()
     }
@@ -49,10 +49,10 @@ final class AddLoanViewModel: ObservableObject {
     func setupEditView() {
         guard let loan = loanToEdit else { return }
         
-        name = loan.name ?? ""
+        name = loan.wrappedName
         amount = "\(loan.totalAmount)"
-        startDate = loan.startDate ?? Date()
-        dueDate = loan.dueDate ?? Date()
+        startDate = loan.wrappedStartDate
+        dueDate = loan.wrappedDueDate
     }
 
     func isValidForm() -> Bool {

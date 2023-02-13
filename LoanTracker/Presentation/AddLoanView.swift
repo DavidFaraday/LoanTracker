@@ -12,7 +12,7 @@ struct AddLoanView: View {
     @Environment(\.dismiss) var dismiss
     
     @ObservedObject var viewModel: AddLoanViewModel
-
+    
     @ViewBuilder
     private func saveButton() -> some View {
         Button{

@@ -25,6 +25,8 @@ struct PaymentView: View {
                 .padding(.horizontal)
             
             Text(viewModel.expectedToFinishOn)
+                .multilineTextAlignment(.center)
+                .font(.caption)
         }
     }
     

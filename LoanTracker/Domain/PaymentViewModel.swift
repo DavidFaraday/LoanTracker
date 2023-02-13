@@ -9,7 +9,7 @@ import SwiftUI
 
 final class PaymentViewModel: ObservableObject {
 
-    @Published private(set) var expectedToFinishOn: String = ""
+    @Published private(set) var expectedToFinishOn = ""
     @Published private(set) var progress = Progress()
     @Published private(set) var allPayments: [Payment] = []
     @Published private(set) var allPaymentObjects: [PaymentObject] = []
@@ -39,10 +39,12 @@ final class PaymentViewModel: ObservableObject {
     func calculateDays() {
         guard let loan = loan else { return }
 
+        var paymentStatus = ""
+        
         let totalPaid = allPayments.reduce(0) { $0 + $1.amount }
         
-        let totalDays = Calendar.current.dateComponents([.day], from: loan.startDate ?? Date(), to: loan.dueDate ?? Date()).day!
-        let passedDays = Calendar.current.dateComponents([.day], from: loan.startDate ?? Date(), to: Date()).day!
+        let totalDays = Calendar.current.dateComponents([.day], from: loan.wrappedStartDate, to: loan.wrappedDueDate).day!
+        let passedDays = Calendar.current.dateComponents([.day], from: loan.wrappedStartDate, to: Date()).day!
         
         if passedDays == 0 || totalPaid == 0 {
             expectedToFinishOn = ""
@@ -52,11 +54,7 @@ final class PaymentViewModel: ObservableObject {
         let didPayPerDay = totalPaid / Double(passedDays)
         let shouldPayPerDay = loan.totalAmount / Double(totalDays)
 
-        if shouldPayPerDay < didPayPerDay {
-            //we are behind the schedule
-        } else {
-            //we are ahead of schedule
-        }
+        paymentStatus = shouldPayPerDay > didPayPerDay ? "Behind the schedule" : "Ahead of schedule"
         
         let daysLeftToFinish = (loan.totalAmount - totalPaid) / didPayPerDay
 
@@ -67,7 +65,7 @@ final class PaymentViewModel: ObservableObject {
             return
         }
 
-        expectedToFinishOn = "Expected to finish by \(newDate.formatted(date: .long, time: .omitted))"
+        expectedToFinishOn = "Expected to finish by \(newDate.formatted(date: .long, time: .omitted)) \n \(paymentStatus)"
     }
     
     func deleteItem(paymentObject: PaymentObject, index: IndexSet) {

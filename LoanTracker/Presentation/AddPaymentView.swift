@@ -35,7 +35,7 @@ struct AddPaymentView: View {
                 TextField("Amount", text: $viewModel.amount)
                     .keyboardType(.numberPad)
                 
-                DatePicker("Date", selection:  $viewModel.date, in: Date()..., displayedComponents: .date)
+                DatePicker("Date", selection:  $viewModel.date, displayedComponents: .date)
             }
         }
         .toolbar {

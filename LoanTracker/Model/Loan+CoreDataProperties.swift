@@ -27,6 +27,13 @@ extension Loan {
         name ?? "Unknown"
     }
     
+    public var wrappedDueDate: Date {
+        dueDate ?? Date()
+    }
+    
+    public var wrappedStartDate: Date {
+        startDate ?? Date()
+    }
     
     public var paymentArray: [Payment] {
         let set = payments as? Set<Payment> ?? []

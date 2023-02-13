@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22C65" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
-    <entity name="Loan" representedClassName="Loan" isAbstract="YES" syncable="YES">
+    <entity name="Loan" representedClassName="Loan" syncable="YES">
         <attribute name="dueDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -8,7 +8,7 @@
         <attribute name="totalAmount" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
         <relationship name="payments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Payment" inverseName="loan" inverseEntity="Payment"/>
     </entity>
-    <entity name="Payment" representedClassName="Payment" isAbstract="YES" syncable="YES">
+    <entity name="Payment" representedClassName="Payment" syncable="YES">
         <attribute name="amount" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="String"/>
